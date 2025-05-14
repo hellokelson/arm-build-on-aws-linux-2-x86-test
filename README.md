@@ -1,6 +1,12 @@
 # Building ARM Docker Images on x86 EC2 Instances
 
+> **⚠️ IMPORTANT NOTICE:** This solution is provided for testing purposes only and is NOT an official AWS solution. This is an open source project provided under the MIT License.
+
 This repository contains a test environment for building and running ARM64 Docker images on x86 EC2 instances using Docker BuildX and QEMU emulation.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Prerequisites
 
