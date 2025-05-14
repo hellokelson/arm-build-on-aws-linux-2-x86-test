@@ -20,17 +20,29 @@ sudo docker run --privileged --rm tonistiigi/binfmt --install all
 
 # Set up Docker buildx
 echo "Setting up Docker buildx..."
-# Remove the builder if it already exists
+
+# More thorough cleanup of existing buildx builder
+echo "Cleaning up any existing buildx builders named 'arm64builder'..."
+# First try the standard removal
 if docker buildx ls | grep -q arm64builder; then
-  echo "Builder 'arm64builder' already exists, removing it..."
-  sudo docker buildx rm arm64builder
+  echo "Removing builder 'arm64builder'..."
+  sudo docker buildx rm -f arm64builder || true
 fi
 
-# Create a new builder
-echo "Creating new builder 'arm64builder'..."
-sudo docker buildx create --name arm64builder --driver docker-container --use
+# Check for any lingering builder containers and remove them
+echo "Checking for lingering builder containers..."
+BUILDER_CONTAINER=$(sudo docker ps -a | grep buildx_buildkit_arm64builder || true)
+if [ ! -z "$BUILDER_CONTAINER" ]; then
+  CONTAINER_ID=$(echo $BUILDER_CONTAINER | awk '{print $1}')
+  echo "Found lingering container: $CONTAINER_ID, removing it..."
+  sudo docker rm -f $CONTAINER_ID || true
+fi
 
-# Bootstrap the builder
+# Create a new builder with a unique name to avoid conflicts
+BUILDER_NAME="arm64builder_$(date +%s)"
+echo "Creating new builder '$BUILDER_NAME'..."
+sudo docker buildx create --name $BUILDER_NAME --driver docker-container
+sudo docker buildx use $BUILDER_NAME
 sudo docker buildx inspect --bootstrap
 
 # Enable experimental features in Docker

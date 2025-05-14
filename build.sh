@@ -13,6 +13,10 @@ docker version | grep -i experimental
 echo "Verifying QEMU registration:"
 ls -la /proc/sys/fs/binfmt_misc/qemu-*
 
+# Get the current buildx builder name
+BUILDER_NAME=$(docker buildx ls | grep -v default | grep '\*' | awk '{print $1}')
+echo "Using buildx builder: $BUILDER_NAME"
+
 # Build the ARM64 Docker image
 echo "Building ARM64 Docker image..."
 docker buildx build --platform linux/arm64 -t jemalloc-test:arm64 --load .
