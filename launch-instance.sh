@@ -6,7 +6,7 @@ AMI_ID="ami-0090481fc3887c878"
 REGION="us-west-2"
 INSTANCE_TYPE="m5.xlarge"
 KEY_NAME="zk-us-west-2-new"  # Replace with your key pair name
-SECURITY_GROUP="bastion-sg"       # Replace with your security group if needed
+SECURITY_GROUP="bastion"       # Replace with your security group if needed
 
 # Launch EC2 instance
 echo "Launching EC2 instance..."
