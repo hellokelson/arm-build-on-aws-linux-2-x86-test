@@ -70,3 +70,35 @@ fi
 
 echo "Setup complete! You may need to log out and back in for group changes to take effect."
 echo "Run the build script with: ./build.sh"
+
+# Print system information
+echo ""
+echo "=== System Information ==="
+echo "OS Information:"
+cat /etc/os-release
+echo ""
+echo "Kernel Information:"
+uname -a
+echo ""
+echo "GCC Version:"
+gcc --version
+echo ""
+echo "Rust Version:"
+if command -v rustc &> /dev/null; then
+  rustc --version
+else
+  echo "Rust is not installed"
+fi
+echo ""
+echo "Docker Version:"
+docker version
+echo ""
+echo "Docker BuildX Version:"
+docker buildx version
+echo ""
+echo "Available BuildX Builders:"
+docker buildx ls
+echo ""
+echo "QEMU Versions:"
+ls -la /usr/bin/qemu-* | grep -v "\.so"
+echo ""
